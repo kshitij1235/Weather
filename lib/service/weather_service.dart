@@ -1,7 +1,4 @@
-
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,32 +13,29 @@ class WeatherService {
     required this.API_KEY
   });
 
-  Future<Weather> getweather(String cityname)async {
-    final response = await http.get(Uri.parse('$BASE_URL?q=$cityname&appid=$API_KEY&unit=metric'));
+  Future<Weather> getweather(String cityname) async {
+    // Corrected units parameter to 'units=metric' for Celsius
+    final response = await http.get(Uri.parse('$BASE_URL?q=$cityname&appid=$API_KEY&units=metric'));
 
-    if(response.statusCode == 200){
-      return  Weather.fromJson(jsonDecode(response.body));
-    }
-    else{
+    if (response.statusCode == 200) {
+      return Weather.fromJson(jsonDecode(response.body));
+    } else {
       throw Exception("Failed to get the weather data");
     }
-
   }
 
-
-  Future<String> getcurrentlocation() async{
+  Future<String> getcurrentlocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if(permission == LocationPermission.denied){
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    Position position = await Geolocator.getCurrentPosition(
+
+    Position position = await Geolocator.getCurrentPosition();
+    List<Placemark> placemark = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude
     );
 
-
-    List<Placemark> placemark = await placemarkFromCoordinates(position.latitude, 
-    position.longitude);
-
-  return placemark[0].locality ?? "";
-
+    return placemark[0].locality ?? "";
   }
 }

@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:weather/pages/homepage.dart';
+import 'package:weather/pages/homepage.dart'; // Ensure this path is correct
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
-
+      home: Homepage(), // Ensure Homepage is correctly imported and defined
     );
   }
-
 }
